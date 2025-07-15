@@ -1,0 +1,127 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# editor directories and files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+Thumbs.db
+*.swp
+*.swo
+
+# next.js
+.next
+
+# local build artifacts
+out
+
+# storybook
+storybook-static
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Optional parcel-bundler cache
+.cache
+
+# Optional SvelteKit build
+.svelte-kit
+
+# Optional typescript cache
+*.tsbuildinfo
+
+# Optional yarn v2+ cache
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn/patches
+.yarn/releases
+.yarn/plugins
+.yarn/sdks
+.yarn/versions
+
+# Optional next.js build output
+.next
+
+# Optional Nuxt.js build output
+.nuxt
+
+# Optional vuepress build output
+.vuepress/dist
+
+# Optional Gatsby files
+.cache/
+public
+
+# Optional vue files
+dist
+
+# Optional Quasar build output
+/dist/spa
+/dist/ssr
+/dist/pwa
+/dist/bex
+/dist/capacitor
+/dist/electron
+
+# Optional Capacitor build output
+/android
+/ios
+
+# Optional Expo files
+.expo
+.expo-shared
+
+# Optional React Native files
+*.keystore
+
+# Optional Firebase cache
+.firebase
+
+# Optional VS Code settings
+.vscode/*
+
+# Optional local env files
+.env.*.local
