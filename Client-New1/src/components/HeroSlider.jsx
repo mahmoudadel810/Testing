@@ -1,185 +1,214 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
-import { heroSlides } from '../data/mockData';
-import '../App.css';
+import { Link } from 'react-router-dom';
 
-const HeroSlider = memo(() => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
+const HeroSlider = () => {
+	const [currentSlide, setCurrentSlide] = useState(0);
+	const [isPlaying, setIsPlaying] = useState(true);
 
-  // Auto-play functionality
-  useEffect(() => {
-    if (!isPlaying || isHovered) return;
+	const slides = [
+		{
+			id: 1,
+			image: '/src/assets/hero1.jpg',
+			title: "Latest Smartphones",
+			subtitle: "Discover the newest mobile technology",
+			description: "Get the latest smartphones with cutting-edge features and amazing performance.",
+			cta: "Shop Now",
+			link: "/shop"
+		},
+		{
+			id: 2,
+			image: '/src/assets/hero2.jpg',
+			title: "Gaming Laptops",
+			subtitle: "Ultimate gaming experience",
+			description: "High-performance gaming laptops for the ultimate gaming experience.",
+			cta: "Explore Gaming",
+			link: "/shop"
+		},
+		{
+			id: 3,
+			image: '/src/assets/hero3.jpg',
+			title: "Smart Home Devices",
+			subtitle: "Automate your life",
+			description: "Transform your home with smart devices and IoT technology.",
+			cta: "Smart Home",
+			link: "/shop"
+		},
+		{
+			id: 4,
+			image: '/src/assets/hero4.webp',
+			title: "Audio Equipment",
+			subtitle: "Premium sound quality",
+			description: "Experience crystal clear audio with our premium sound equipment.",
+			cta: "Listen Now",
+			link: "/shop"
+		},
+		{
+			id: 5,
+			image: '/src/assets/hero5.jpg',
+			title: "Accessories & More",
+			subtitle: "Complete your setup",
+			description: "Find the perfect accessories to complement your devices.",
+			cta: "Shop Accessories",
+			link: "/shop"
+		}
+	];
 
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
+	useEffect(() => {
+		let interval;
+		if (isPlaying) {
+			interval = setInterval(() => {
+				setCurrentSlide((prev) => (prev + 1) % slides.length);
+			}, 5000);
+		}
+		return () => clearInterval(interval);
+	}, [isPlaying, slides.length]);
 
-    return () => clearInterval(interval);
-  }, [isPlaying, isHovered]);
+	const nextSlide = () => {
+		setCurrentSlide((prev) => (prev + 1) % slides.length);
+	};
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-  };
+	const prevSlide = () => {
+		setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+	};
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  };
+	const goToSlide = (index) => {
+		setCurrentSlide(index);
+	};
 
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
+	const togglePlayPause = () => {
+		setIsPlaying(!isPlaying);
+	};
 
-  const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
+	return (
+		<section className="relative w-full h-screen overflow-hidden">
+			<AnimatePresence mode="wait">
+				<motion.div
+					key={currentSlide}
+					initial={{ opacity: 0, scale: 1.1 }}
+					animate={{ opacity: 1, scale: 1 }}
+					exit={{ opacity: 0, scale: 0.9 }}
+					transition={{ duration: 0.8, ease: "easeInOut" }}
+					className="absolute inset-0"
+				>
+					{/* Background Image */}
+					<div className="absolute inset-0">
+						<img
+							src={slides[currentSlide].image}
+							alt={slides[currentSlide].title}
+							className="w-full h-full object-cover"
+						/>
+						{/* Overlay */}
+						<div className="absolute inset-0 bg-black/40" />
+					</div>
 
-  return (
-    <div 
-      className="relative w-full h-[600px] md:h-[700px] overflow-hidden rounded-2xl shadow-2xl"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Background Slides */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <div className="relative w-full h-full">
-            <img
-              src={heroSlides[currentSlide].image}
-              alt={heroSlides[currentSlide].title}
-              className="w-full h-full object-cover"
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+					{/* Content */}
+					<div className="relative z-10 flex items-center justify-center h-full">
+						<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+							<div className="max-w-4xl mx-auto text-center text-white">
+								<motion.div
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: 0.2 }}
+								>
+									<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
+										{slides[currentSlide].title}
+									</h1>
+								</motion.div>
 
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex items-center">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="max-w-2xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`content-${currentSlide}`}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-white"
-              >
-                <motion.p
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  className="text-lg md:text-xl font-medium text-blue-200 mb-2"
-                >
-                  {heroSlides[currentSlide].subtitle}
-                </motion.p>
-                
-                <motion.h1
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight"
-                >
-                  {heroSlides[currentSlide].title}
-                </motion.h1>
-                
-                <motion.p
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg"
-                >
-                  {heroSlides[currentSlide].description}
-                </motion.p>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                >
-                  <button className="btn-accent text-lg px-8 py-4 hover-scale">
-                    {heroSlides[currentSlide].cta}
-                  </button>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
+								<motion.div
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: 0.4 }}
+								>
+									<h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 text-blue-200">
+										{slides[currentSlide].subtitle}
+									</h2>
+								</motion.div>
 
-      {/* Navigation Arrows */}
-      <motion.button
-        whileHover={{ scale: 1.1, x: -5 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={prevSlide}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 hover-lift"
-      >
-        <ChevronLeft size={24} />
-      </motion.button>
+								<motion.div
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: 0.6 }}
+								>
+									<p className="text-lg md:text-xl mb-8 text-gray-200 max-w-2xl mx-auto">
+										{slides[currentSlide].description}
+									</p>
+								</motion.div>
 
-      <motion.button
-        whileHover={{ scale: 1.1, x: 5 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={nextSlide}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 hover-lift"
-      >
-        <ChevronRight size={24} />
-      </motion.button>
+								<motion.div
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: 0.8 }}
+								>
+									<Link
+										to={slides[currentSlide].link}
+										className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-300 hover:scale-105 shadow-lg"
+									>
+										{slides[currentSlide].cta}
+									</Link>
+								</motion.div>
+							</div>
+						</div>
+					</div>
+				</motion.div>
+			</AnimatePresence>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3">
-        {heroSlides.map((_, index) => (
-          <motion.button
-            key={index}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
-                ? 'bg-white scale-125'
-                : 'bg-white/50 hover:bg-white/75'
-            }`}
-          />
-        ))}
-      </div>
+			{/* Navigation Arrows */}
+			<button
+				onClick={prevSlide}
+				className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300 group"
+			>
+				<ChevronLeft size={24} className="text-white group-hover:scale-110 transition-transform duration-300" />
+			</button>
 
-      {/* Play/Pause Button */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={togglePlayPause}
-        className="absolute bottom-6 right-6 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300"
-      >
-        {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-      </motion.button>
+			<button
+				onClick={nextSlide}
+				className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300 group"
+			>
+				<ChevronRight size={24} className="text-white group-hover:scale-110 transition-transform duration-300" />
+			</button>
 
-      {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
-        <motion.div
-          key={currentSlide}
-          initial={{ width: 0 }}
-          animate={{ width: isPlaying && !isHovered ? '100%' : '0%' }}
-          transition={{ duration: 5, ease: 'linear' }}
-          className="h-full bg-gradient-to-r from-blue-400 to-orange-400"
-        />
-      </div>
-    </div>
-  );
-});
+			{/* Play/Pause Button */}
+			<button
+				onClick={togglePlayPause}
+				className="absolute top-4 right-4 z-20 p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300"
+			>
+				{isPlaying ? (
+					<Pause size={20} className="text-white" />
+				) : (
+					<Play size={20} className="text-white" />
+				)}
+			</button>
 
-HeroSlider.displayName = 'HeroSlider';
+			{/* Dots Indicator */}
+			<div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+				{slides.map((_, index) => (
+					<button
+						key={index}
+						onClick={() => goToSlide(index)}
+						className={`w-3 h-3 rounded-full transition-all duration-300 ${
+							index === currentSlide
+								? 'bg-white scale-125'
+								: 'bg-white/50 hover:bg-white/75'
+						}`}
+					/>
+				))}
+			</div>
+
+			{/* Progress Bar */}
+			<div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-20">
+				<motion.div
+					className="h-full bg-gradient-to-r from-primary to-accent"
+					initial={{ width: 0 }}
+					animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+					transition={{ duration: 0.3 }}
+				/>
+			</div>
+		</section>
+	);
+};
 
 export default HeroSlider;
 
