@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 // Pages
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
+import DealsPage from './pages/DealsPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/LoginPage';
@@ -62,6 +63,7 @@ const App = () => {
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/deals" element={<DealsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
